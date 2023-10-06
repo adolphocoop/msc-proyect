@@ -7,11 +7,15 @@ import {
     deleteProduct,
     editProduct
 } from '../controllers/products.controller.js'
+//Importamos el validatorSchema
+import { ValidateSchema } from "../middlewares/validator.middleware.js";
+//importamos los esquemas de validacion
+import { productSchema} from '../schemas/products.schemas.js'
 
 const router = Router();
 router.get ('/productos', authRequired, getProducts);
 //Agregar producto
-router.post('/productos', authRequired, creatProduct);
+router.post('/productos', authRequired, ValidateSchema(productSchema), creatProduct);
 //Obtener un producto por id
 router.get('/productos/:id', authRequired, getProduct);
 //Eliminar producto

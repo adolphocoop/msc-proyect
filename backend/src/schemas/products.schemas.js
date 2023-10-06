@@ -7,8 +7,8 @@ export const productSchema = z.object({
     }),
     price: z.number({
         required_error: 'Precio debe ser un numero'
-    }).optional(),
+    }),
     year: z.number({
         required_error: 'Anio debe ser un numero'
-    }).optional()
+    })
 })//Fin de productSchema 
