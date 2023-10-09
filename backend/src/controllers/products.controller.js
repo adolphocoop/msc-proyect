@@ -9,7 +9,7 @@ export const getProducts = async (req, res) =>{
     
  } catch (error) {
     console.log(error)
-    res.status(500).json({ error: "Error al obtener productos"})
+    res.status(500).json({ message: "Error al obtener productos"})
  }
 }
 
@@ -28,7 +28,7 @@ export const creatProduct = async (req,res) =>{
         
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: "Error al crear un producto"})
+        res.status(500).json({message: "Error al crear un producto"})
     }
 
 }
@@ -38,12 +38,12 @@ export const getProduct = async (req,res) =>{
         const product = await Products.findById(req.params.id)
                                       .populate('user');          
         if(!product)
-        return res.status(404).json({error: "producto no encontrado"})
+        return res.status(404).json({message: "producto no encontrado"})
         res.json(product)
         
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: "Error al obtener el producto"})
+        res.status(500).json({message: "Error al obtener el producto"})
     }
 
 }//
@@ -54,12 +54,12 @@ export const deleteProduct = async (req,res) =>{
     try {
         const product = await Products.findByIdAndDelete(req.params.id);
         if(!product)
-        return res.status(404).json({error: "Producto no encontrado"})
+        return res.status(404).json({message: "Producto no encontrado"})
         res.json(product)
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({error: "Error al eliminar el producto"})
+        res.status(500).json({message: "Error al eliminar el producto"})
         
     }
 
@@ -69,11 +69,11 @@ export const editProduct = async (req,res) =>{
 try {
     const product = await Products.findByIdAndUpdate(req.params.id, req.body, {new: true});
     if(!product)
-    return res.status(404).json({error: "Producto no encontrado"})
+    return res.status(404).json({message: "Producto no encontrado"})
     res.json(product)
 } catch (error) {
     console.log(error)
-    res.status(500).json({error: "Error al actualizar producto"})
+    res.status(500).json({message: "Error al actualizar producto"})
 }
 }
 

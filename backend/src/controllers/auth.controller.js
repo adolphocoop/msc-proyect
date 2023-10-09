@@ -4,6 +4,7 @@ import User from '../models/user.models.js'
 import bcryptjs from 'bcryptjs';
 //Importamos el token
 import { createAccessToken } from '../libs/jwt.js';
+import { TOKEN_SECRET } from '../config.js';
 
 
 
@@ -19,7 +20,7 @@ export const register = async (req, res) =>{
    const userFound = await User.findOne({email});
    if(userFound)
    return res.status(400)
-             .json({message: "El email ya esta en uso"})
+             .json(["El email ya esta en uso"])
 
 
 
@@ -70,7 +71,10 @@ export const login = async (req, res) =>{
         return res.status(400).json({message: "El password no coicide"})
        }
        const token = await createAccessToken({id: userFound._id})
-       res.cookie('token', token)
+       res.cookie('token', token,{
+        sameSite: 'none',
+        secure: true
+       })
        res.json({
         id: userFound._id,
         username: userFound.username,
@@ -107,3 +111,22 @@ export const profile = async(req, res)=>{
    /* console.log(req.user)
     res.send("profile")*/
 }//Fin de perfil
+export const verifyToken = async (req, res) =>{
+    const {token} = req.cookies;
+    if(!token)
+    return res.status(401).json({message: ["No autorizado"]})
+
+    JsonWebTokenError.verify(token, TOKEN_SECRET, async (err, user)=>{
+        if(err)//Si hay un error al validar el token
+        return res.status(401).json({message: ["No autorizado"]});
+        const userFound = await User.findById(user.id);
+        if(!userFound)//Si no se encuentra el usuario que viene en el token
+        return res.status(401).json({message: "No autorizado" })
+
+        return res.json({
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+        })//Fin de return res.json
+    })//Fin de jwt.verify
+}//Fin de verifyToken

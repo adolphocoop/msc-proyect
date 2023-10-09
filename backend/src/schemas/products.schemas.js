@@ -11,4 +11,4 @@ export const productSchema = z.object({
     year: z.number({
         required_error: 'Anio debe ser un numero'
     }).optional()
-})//Fin de productSchema 
+});//Fin de productSchema 
