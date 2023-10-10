@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest, verifyToken } from "../api/auth";
+import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from 'js-cookie'
 
 export const AuthContext = createContext();
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) =>{
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] =useState(false)
     const [errors, setErrors] = useState([]);
+    const [loading, setLoading ] = useState(true)
 
     
     
@@ -55,13 +56,42 @@ export const AuthProvider = ({ children }) =>{
         }
     }, [errors])
 
-    useEffect( ()=>{
-        const cookies = Cookies.get()
+    useEffect ( ()=>{
+        async function checkLogin(){
+            const cookies = Cookies.get()
+              //console.log(cookies.token)
+            if(!cookies.token){
+            //si no hay un cookie que contenga el token
+            setIsAuthenticated(false);//El usuario no esta autenticado
+            setLoading(false);//No hay cookie y ya no se cargan los datos
+            //Establecemos los datos del usuario en null
+            return setUser(null);
+            }
+            try{ //En caso de que si exista un token lo verificamos
+                const res = await verifyTokenRequest(cookies.token);
+                console.log(res);
+                if (!res.data){ //Si el servidor no responde con un token
+                    setIsAuthenticated(false); //El usuario no esta autenticado
+                    setLoading(false);
+                    return;
 
-        if(cookies.token){
-            console.log(cookies.token)
-        }
-    }, []);
+                }
+                //en caso de que exista un token y se obtenga datos de respuesta
+                setIsAuthenticated(true); //El usuario ya esta autenticado
+                setUser(res.data);//Establecemos los datos del usuario
+                setLoading(false); //Termino de cargar los datos del usuario
+            } catch (error){
+                console.log(error);
+                setIsAuthenticated(false)
+                setLoading(false)
+                setUser(null)
+            }//Fin del catch
+            
+
+        }//Fin de checklogin
+        checkLogin();
+       
+    }, [])
 
 
 
@@ -72,6 +102,7 @@ export const AuthProvider = ({ children }) =>{
             user,
             isAuthenticated,
             errors,
+            loading
         }}>
             {children}
         </AuthContext.Provider>

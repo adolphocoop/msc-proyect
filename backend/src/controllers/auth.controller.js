@@ -4,6 +4,7 @@ import User from '../models/user.models.js'
 import bcryptjs from 'bcryptjs';
 //Importamos el token
 import { createAccessToken } from '../libs/jwt.js';
+import jwt from 'jsonwebtoken'
 import { TOKEN_SECRET } from '../config.js';
 
 
@@ -113,10 +114,10 @@ export const profile = async(req, res)=>{
 }//Fin de perfil
 export const verifyToken = async (req, res) =>{
     const {token} = req.cookies;
-    if(!token)
+    if(!token)// Si hay un error al validar el token
     return res.status(401).json({message: ["No autorizado"]})
 
-    JsonWebTokenError.verify(token, TOKEN_SECRET, async (err, user)=>{
+    jwt.verify(token, TOKEN_SECRET, async (err, user)=>{
         if(err)//Si hay un error al validar el token
         return res.status(401).json({message: ["No autorizado"]});
         const userFound = await User.findById(user.id);
