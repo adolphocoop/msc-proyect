@@ -1,5 +1,6 @@
+import React from "react"
 import { useProducts } from "../context/ProductsContext"
-
+import { Link } from 'react-router-dom'
 
 function ProductCard({product}) {
     const {deleteProduct} = useProducts()
@@ -13,7 +14,10 @@ function ProductCard({product}) {
 
                     //console.log(product._id)
                 }}>Delete</button>
-                <button>Edit</button>
+
+                <Link to={'/product/' + product._id}>
+                    Editar
+                    </Link>
 
             </div>
         </header>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { createProductRequest, getProductsRequest,deleteProductRequest} from "../api/products";
+import { createProductRequest, getProductsRequest,deleteProductRequest, getProductRequest, updateProductRequest} from "../api/products";
 const ProductsContext = createContext();
 
    export const useProducts = ()=>{
@@ -53,7 +53,26 @@ export function ProductsProvider ({ children }){
             console.log(error)
             
         }
-    }
+    }//Fin de getProduct
+    const getProduct = async (id) =>{
+        try {
+            const res= await getProductRequest(id)
+            //console.log(res)
+            return res.data
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }// Fin de getProduct
+    //Funcion para editar un producto de la base de datos
+    const updateProduct = async (id, product)=>{
+        try {
+            await updateProductRequest(id, product);
+        } catch (error) {
+            console.log(error)
+        }
+    }//Fin de updateProduct
 
 
 
@@ -63,7 +82,9 @@ export function ProductsProvider ({ children }){
                 products,
                 createProduct,
                 getProducts,
-                deleteProduct
+                deleteProduct,
+                getProduct,
+                updateProduct
             }}>
                 {children}
             </ProductsContext.Provider>

@@ -1,15 +1,37 @@
 import {useForm} from 'react-hook-form';
 import { useProducts } from '../context/ProductsContext';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react';
 function ProductsFormPage() {
-  const { register, handleSubmit} = useForm();
-  const { products, createProduct } = useProducts();
+  const { register, handleSubmit, setValue} = useForm();
+  const { products, createProduct, getProduct, updateProduct } = useProducts();
   const navigate = useNavigate();
-  console.log(products);
+  const params = useParams();
+
+  useEffect( ()=>{
+    async function loadProduct(){
+    //console.log(params);
+    if(params.id) {//si existe en los params un id
+    //Obtenemos los datos del producto
+    const product = await getProduct(params.id);
+    setValue('name', product.name);
+    setValue('price', product.price);
+    setValue('year', product.year)
+  }
+}//Fin de loadProduct
+loadProduct();
+}, [])  //Fin de useEffect
+
+  //console.log(products);
 
   const onSubmit = handleSubmit( (data) =>{
-    console.log(data);
-    createProduct(data)
+    //console.log(data);
+    if(params.id){//Si hay un parametro en la url actualiza
+      updateProduct(params.id, data);
+    } else{ //agregar un producto
+      createProduct(data);
+
+    }
     navigate('/products')
   })//Fin de onSubmit
 
