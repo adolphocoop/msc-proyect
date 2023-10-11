@@ -7,13 +7,19 @@ import ProfilePage from "./pages/ProfilePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductsFormPage from "./pages/ProductsFormPage";
 import  ProtectedRoute   from './ProtectedRoute'
-
+import { ProductsProvider } from "./context/ProductsContext";
+import Navbar from "./components/Navbar";
 
 
 function App() {
   return (
     <AuthProvider>
+      <ProductsProvider>
        <BrowserRouter>
+       
+       <main className="container mx-auto px-10">
+
+       <Navbar></Navbar>
     <Routes>
       <Route path='/' element = {<HomePage />}/>
       <Route path='/login' element = {<LoginPage/>}/>
@@ -26,7 +32,9 @@ function App() {
       <Route path='/product/:id' element = {< ProductsFormPage />}/>
       </Route>
     </Routes>
+    </main>
     </BrowserRouter>
+    </ProductsProvider>
     </AuthProvider>
    
   )

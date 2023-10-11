@@ -1,10 +1,16 @@
-import {useForm} from 'react-hook-form'
-
+import {useForm} from 'react-hook-form';
+import { useProducts } from '../context/ProductsContext';
+import { useNavigate } from 'react-router-dom'
 function ProductsFormPage() {
   const { register, handleSubmit} = useForm();
+  const { products, createProduct } = useProducts();
+  const navigate = useNavigate();
+  console.log(products);
 
   const onSubmit = handleSubmit( (data) =>{
-    console.log(data)
+    console.log(data);
+    createProduct(data)
+    navigate('/products')
   })//Fin de onSubmit
 
   return (
