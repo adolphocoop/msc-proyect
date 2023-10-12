@@ -17,7 +17,7 @@ if(products.length === 0)
 
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
       {
         products.map( (product) =>(
           <ProductCard product={product}

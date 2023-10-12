@@ -9,6 +9,7 @@ import ProductsFormPage from "./pages/ProductsFormPage";
 import  ProtectedRoute   from './ProtectedRoute'
 import { ProductsProvider } from "./context/ProductsContext";
 import Navbar from "./components/Navbar";
+import NotFound from "./pages/NotFound";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Route path='/add-product' element = {< ProductsFormPage />}/>
       <Route path='/product/:id' element = {< ProductsFormPage />}/>
       </Route>
+      <Route path="*" element={<NotFound/>}/>
     </Routes>
     </main>
     </BrowserRouter>
