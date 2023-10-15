@@ -7,7 +7,7 @@ function HomePage() {
         <h2 className="text-1xl font6-bold my-3 text-center">Lenguajes web</h2>
       <div>
       <p className="gap-x-2 text-justify pt-5 mt-5 text-sm">
-        Eate sistema ha sido creado en la maestria Lenguajes Web
+        Gestiona tus productos
 
       </p>
       <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r
